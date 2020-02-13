@@ -1,7 +1,7 @@
 ## helpful read: https://divingintogeneticsandgenomics.rbind.io/post/run-rstudio-server-with-singularity-on-hpc/
 ## combining the tidyverse and verse Dockerfiles, wanting to make sure I have the rstudio-r version
 
-FROM rocker/rstudio:3.6.1
+FROM rocker/rstudio:3.6.2
 
 LABEL org.label-schema.license="GPL-2.0" \
       org.label-schema.vcs-url="https://github.com/rsettlag" \
@@ -14,9 +14,9 @@ RUN apt-get update -qq && apt-get -y --no-install-recommends install \
   libcairo2-dev \
   libsqlite3-dev \
   libmariadbd-dev \
-  libmariadb-client-lgpl-dev \
+##  libmariadb-client-lgpl-dev \
   ## replaced by  this one maybe
-##  libmariadb-client-lgpl-dev-compat \
+  libmariadb-client-lgpl-dev-compat \
   libpq-dev \
   libssh2-1-dev \
   mesa-common-dev \
@@ -25,8 +25,8 @@ RUN apt-get update -qq && apt-get -y --no-install-recommends install \
   libsasl2-dev \
   libhdf5-dev \
   curl \
-  rustc
-RUN Rscript -e "install.packages(Ncpus=6,c('tidyverse','dplyr','devtools','formatR','remotes','selectr','caTools','ggpubr','data.table','BiocManager','lme4','VennDiagram','doParallel','gplots','ape','metap','bigmemory','circlize','dendextend','flashClust','ggrepel','randomForest','parallelDist','pvclust','Rtsne','Seurat','vegan','zoo','igraph','rlecuyer','tibble','car','RcppEigen','crosstalk','sctransform','uwot'))" \
+  rustc 
+RUN Rscript -e "install.packages(Ncpus=6,'tidyverse','dplyr','devtools','formatR','remotes','selectr','caTools','ggpubr','data.table','BiocManager','lme4','VennDiagram','doParallel','gplots','ape','metap','bigmemory','circlize','dendextend','flashClust','ggrepel','randomForest','parallelDist','pvclust','Rtsne','Seurat','vegan','zoo','igraph','rlecuyer','tibble','car','RcppEigen','crosstalk','sctransform','uwot'))" \
   && Rscript -e "instpkgs<-c('GenomicAlignments','Rsamtools','multtest','rtracklahyer','seqinr','micropan','phanghorn','phytools','Biostrings','Biobase','MLSeq','biomaRt','DESeq2','DT','edgeR','goseq','gplots','gtools','Heatplus','rwantshue','WGCNA'); BiocManager::install(instpkgs)" \
   && wget "https://travis-bin.yihui.name/texlive-local.deb" \
   && dpkg -i texlive-local.deb \
@@ -84,7 +84,7 @@ RUN Rscript -e "install.packages(Ncpus=6,c('tidyverse','dplyr','devtools','forma
   && install2.r --error PKI \
   ## And some nice R packages for publishing-related stuff
   && install2.r --error --deps TRUE \
-    bookdown \
+    bookdown \ 
     rticles \
     rmdshower \
     rJava \
