@@ -73,7 +73,8 @@ RUN Rscript -e "install.packages(Ncpus=6,c('tidyverse','dplyr','devtools','forma
   && mv ~/.TinyTeX /opt/TinyTeX \
   && /opt/TinyTeX/bin/*/tlmgr path add \
   && tlmgr install ae inconsolata listings metafont mfware parskip pdfcrop tex \
-    url harvard enumerate amsmath float tabularx ctable multirow eurosym graphicx comment setspace enumitem \
+  && tlmgr path add \
+  && tlmgr install url harvard enumerate amsmath float tabularx ctable multirow eurosym graphicx comment setspace enumitem \
   && tlmgr path add \
   && Rscript -e "tinytex::r_texmf()" \
   && chown -R root:staff /opt/TinyTeX \
