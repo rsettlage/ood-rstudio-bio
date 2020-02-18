@@ -25,8 +25,10 @@ RUN apt-get update -qq && apt-get -y --no-install-recommends install \
   libsasl2-dev \
   libhdf5-dev \
   curl \
-  rustc 
-RUN Rscript -e "install.packages(Ncpus=6,'tidyverse','dplyr','devtools','formatR','remotes','selectr','caTools','ggpubr','data.table','BiocManager','lme4','VennDiagram','doParallel','gplots','ape','metap','bigmemory','circlize','dendextend','flashClust','ggrepel','randomForest','parallelDist','pvclust','Rtsne','Seurat','vegan','zoo','igraph','rlecuyer','tibble','car','RcppEigen','crosstalk','sctransform','uwot'))" \
+  rustc \
+  bzip2
+ 
+RUN Rscript -e "install.packages(Ncpus=6,c('tidyverse','dplyr','devtools','formatR','remotes','selectr','caTools','ggpubr','data.table','BiocManager','lme4','VennDiagram','doParallel','gplots','ape','metap','bigmemory','circlize','dendextend','flashClust','ggrepel','randomForest','parallelDist','pvclust','Rtsne','Seurat','vegan','zoo','igraph','rlecuyer','tibble','car','RcppEigen','crosstalk','sctransform','uwot'))" \
   && Rscript -e "instpkgs<-c('GenomicAlignments','Rsamtools','multtest','rtracklahyer','seqinr','micropan','phanghorn','phytools','Biostrings','Biobase','MLSeq','biomaRt','DESeq2','DT','edgeR','goseq','gplots','gtools','Heatplus','rwantshue','WGCNA'); BiocManager::install(instpkgs)" \
   && wget "https://travis-bin.yihui.name/texlive-local.deb" \
   && dpkg -i texlive-local.deb \
@@ -73,6 +75,8 @@ RUN Rscript -e "install.packages(Ncpus=6,'tidyverse','dplyr','devtools','formatR
   && mv ~/.TinyTeX /opt/TinyTeX \
   && /opt/TinyTeX/bin/*/tlmgr path add \
   && tlmgr install ae inconsolata listings metafont mfware parskip pdfcrop tex \
+  && tlmgr path add \
+  && tlmgr install url harvard tools amsmath float ctable multirow eurosym graphics comment setspace enumitem \
   && tlmgr path add \
   && Rscript -e "tinytex::r_texmf()" \
   && chown -R root:staff /opt/TinyTeX \
