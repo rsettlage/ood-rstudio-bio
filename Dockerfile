@@ -25,7 +25,9 @@ RUN apt-get update -qq && apt-get -y --no-install-recommends install \
   libsasl2-dev \
   libhdf5-dev \
   curl \
-  rustc 
+  rustc \
+  bzip2
+ 
 RUN Rscript -e "install.packages(Ncpus=6,c('tidyverse','dplyr','devtools','formatR','remotes','selectr','caTools','ggpubr','data.table','BiocManager','lme4','VennDiagram','doParallel','gplots','ape','metap','bigmemory','circlize','dendextend','flashClust','ggrepel','randomForest','parallelDist','pvclust','Rtsne','Seurat','vegan','zoo','igraph','rlecuyer','tibble','car','RcppEigen','crosstalk','sctransform','uwot'))" \
   && Rscript -e "instpkgs<-c('GenomicAlignments','Rsamtools','multtest','rtracklahyer','seqinr','micropan','phanghorn','phytools','Biostrings','Biobase','MLSeq','biomaRt','DESeq2','DT','edgeR','goseq','gplots','gtools','Heatplus','rwantshue','WGCNA'); BiocManager::install(instpkgs)" \
   && wget "https://travis-bin.yihui.name/texlive-local.deb" \
