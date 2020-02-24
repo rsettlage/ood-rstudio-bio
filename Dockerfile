@@ -1,13 +1,11 @@
 ## helpful read: https://divingintogeneticsandgenomics.rbind.io/post/run-rstudio-server-with-singularity-on-hpc/
 ## combining the tidyverse and verse Dockerfiles, wanting to make sure I have the rstudio-r version
 
-FROM rocker/rstudio:3.6.2
+FROM rsettlag/ood-rstudio-basic:3.6.2
 
 LABEL org.label-schema.license="GPL-2.0" \
       org.label-schema.vcs-url="https://github.com/rsettlag" \
       maintainer="Robert Settlage <rsettlag@vt.edu>"
-
-ENV PATH=$PATH:/opt/TinyTeX/bin/x86_64-linux/
 
 RUN apt-get update -qq && apt-get -y --no-install-recommends install \
   libxml2-dev \
@@ -28,77 +26,13 @@ RUN apt-get update -qq && apt-get -y --no-install-recommends install \
   rustc \
   bzip2
  
-RUN Rscript -e "install.packages(Ncpus=6,c('tidyverse','dplyr','devtools','formatR','remotes','selectr','caTools','ggpubr','data.table','BiocManager','lme4','VennDiagram','doParallel','gplots','ape','metap','bigmemory','circlize','dendextend','flashClust','ggrepel','randomForest','parallelDist','pvclust','Rtsne','Seurat','vegan','zoo','igraph','rlecuyer','tibble','car','RcppEigen','crosstalk','sctransform','uwot'))" \
-  && Rscript -e "instpkgs<-c('GenomicAlignments','Rsamtools','multtest','rtracklahyer','seqinr','micropan','phanghorn','phytools','Biostrings','Biobase','MLSeq','biomaRt','DESeq2','DT','edgeR','goseq','gplots','gtools','Heatplus','rwantshue','WGCNA'); BiocManager::install(instpkgs)" \
-  && wget "https://travis-bin.yihui.name/texlive-local.deb" \
-  && dpkg -i texlive-local.deb \
-  && rm texlive-local.deb \
-  && apt-get update \
-  && apt-get install -y --no-install-recommends \
-    ## for rJava
-    default-jdk \
-    ## Nice Google fonts
-    fonts-roboto \
-    ## used by some base R plots
-    ghostscript \
-    ## used to build rJava and other packages
-    libbz2-dev \
-    libicu-dev \
-    liblzma-dev \
-    ## system dependency of hunspell (devtools)
-    libhunspell-dev \
-    ## system dependency of hadley/pkgdown
-    libmagick++-dev \
-    ## rdf, for redland / linked data
-    librdf0-dev \
-    ## for V8-based javascript wrappers
-    libv8-dev \
-    ## R CMD Check wants qpdf to check pdf sizes, or throws a Warning
-    qpdf \
-    ## For building PDF manuals
-    texinfo \
-    ## for git via ssh key
-    ssh \
- ## parallelization
-    libzmq3-dev \
-    libopenmpi-dev \
- ## for gifski
-    cargo \
- && apt-get clean \
-  && rm -rf /var/lib/apt/lists/ \
-  ## Use tinytex for LaTeX installation
-  && install2.r --deps TRUE --error tinytex \
- ## Admin-based install of TinyTeX:
-  && wget -qO- \
-    "https://github.com/yihui/tinytex/raw/master/tools/install-unx.sh" | \
-    sh -s - --admin --no-path \
-  && mv ~/.TinyTeX /opt/TinyTeX \
-  && /opt/TinyTeX/bin/*/tlmgr path add \
-  && tlmgr install ae inconsolata listings metafont mfware parskip pdfcrop tex \
-  && tlmgr path add \
-  && tlmgr install url harvard tools amsmath float ctable multirow eurosym graphics comment setspace enumitem \
-  && tlmgr path add \
-  && Rscript -e "tinytex::r_texmf()" \
-  && chown -R root:staff /opt/TinyTeX \
-  && chown -R root:staff /usr/local/lib/R/site-library \
-  && chmod -R g+w /opt/TinyTeX \
-  && chmod -R g+wx /opt/TinyTeX/bin \
-  && echo "PATH=${PATH}" >> /usr/local/lib/R/etc/Renviron \
-  ## Currently (2017-06-06) need devel PKI for ssl issue: https://github.com/s-u/PKI/issues/19
-  && install2.r --error PKI \
-  ## And some nice R packages for publishing-related stuff
-  && install2.r --error --deps TRUE \
-    bookdown \ 
-    rticles \
-    rmdshower \
-    rJava \
-    knitr \
-    pkgmaker
+RUN echo "options(repos = c(CRAN='https://cran.rstudio.com'), download.file.method = 'libcurl')" >> /usr/local/lib/R/etc/Rprofile.site
 
-RUN apt-get clean
-RUN sed -i '/^R_LIBS_USER=/d' /usr/local/lib/R/etc/Renviron
-RUN echo 'R_ENVIRON=~/.Renviron.OOD \
-      \nR_ENVIRON_USER=~/.Renviron.OOD \
-      \n' >>/usr/local/lib/R/etc/Renviron
-RUN rm /usr/local/lib/R/etc/Rprofile.site
+RUN Rscript -e "BiocManager::install(update=TRUE,ask=FALSE,lib.loc='/usr/local/lib/R/site-library/',c('tidyverse','dplyr','devtools','formatR','remotes','selectr','caTools','ggpubr','data.table','BiocManager','lme4','VennDiagram','doParallel','gplots','ape','metap','bigmemory','circlize','dendextend','flashClust','ggrepel','randomForest','parallelDist','pvclust','Rtsne','vegan','zoo','igraph','rlecuyer','tibble','car','RcppEigen','crosstalk','sctransform','uwot'))" 
+
+## RUN Rscript -e "instpkgs<-c('GenomicAlignments','Rsamtools','multtest','rtracklahyer','seqinr','micropan','phanghorn','phytools','Biostrings','Biobase','MLSeq','biomaRt','DESeq2','DT','edgeR','goseq','gplots','gtools','Heatplus','rwantshue','WGCNA','Seurat'); BiocManager::install(instpkgs)"
+
+RUN apt-get clean \
+  && rm /usr/local/lib/R/etc/Rprofile.site
+
 
