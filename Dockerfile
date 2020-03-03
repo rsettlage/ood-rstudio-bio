@@ -24,7 +24,11 @@ RUN apt-get update -qq && apt-get -y --no-install-recommends install \
   libhdf5-dev \
   curl \
   rustc \
-  bzip2
+  bzip2 \
+  php \
+  php-common \
+  imagemagick \
+  php-imagick
  
 RUN echo "options(repos = c(CRAN='https://cran.rstudio.com'), download.file.method = 'libcurl')" >> /usr/local/lib/R/etc/Rprofile.site
 
