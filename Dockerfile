@@ -32,9 +32,9 @@ RUN apt-get update -qq && apt-get -y --no-install-recommends install \
  
 RUN echo "options(repos = c(CRAN='https://cran.rstudio.com'), download.file.method = 'libcurl')" >> /usr/local/lib/R/etc/Rprofile.site
 
-RUN Rscript -e "BiocManager::install(update=TRUE,ask=FALSE,lib.loc='/usr/local/lib/R/site-library/',c('tidyverse','dplyr','devtools','formatR','remotes','selectr','caTools','ggpubr','data.table','BiocManager','lme4','VennDiagram','doParallel','gplots','ape','metap','bigmemory','circlize','dendextend','flashClust','ggrepel','randomForest','parallelDist','pvclust','Rtsne','vegan','zoo','igraph','rlecuyer','tibble','car','RcppEigen','crosstalk','sctransform','uwot'))" 
+RUN Rscript -e "BiocManager::install(update=TRUE,ask=FALSE,lib.loc='/usr/local/lib/R/site-library/',c('tidyverse','dplyr','devtools','formatR','remotes','selectr','caTools','ggpubr','data.table','lme4','VennDiagram','doParallel','gplots','ape','metap','bigmemory','circlize','dendextend','flashClust','ggrepel','randomForest','parallelDist','pvclust','Rtsne','vegan','zoo','igraph','rlecuyer','tibble','car','RcppEigen','crosstalk','sctransform','uwot','GenomicAlignments','Rsamtools','multtest','rtracklayer','seqinr','micropan','phangorn','phytools','Biostrings','Biobase','MLSeq','biomaRt','DESeq2','DT','edgeR','goseq','gplots','gtools','Heatplus','rwantshue','WGCNA','Seurat'))" 
 
-## RUN Rscript -e "instpkgs<-c('GenomicAlignments','Rsamtools','multtest','rtracklahyer','seqinr','micropan','phanghorn','phytools','Biostrings','Biobase','MLSeq','biomaRt','DESeq2','DT','edgeR','goseq','gplots','gtools','Heatplus','rwantshue','WGCNA','Seurat'); BiocManager::install(instpkgs)"
+RUN Rscript -e "devtools::install_github('hoesler/rwantshue')"
 
 RUN apt-get clean \
   && rm /usr/local/lib/R/etc/Rprofile.site
