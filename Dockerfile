@@ -1,11 +1,12 @@
 ## helpful read: https://divingintogeneticsandgenomics.rbind.io/post/run-rstudio-server-with-singularity-on-hpc/
 ## combining the tidyverse and verse Dockerfiles, wanting to make sure I have the rstudio-r version
 
-FROM rsettlag/ood-rstudio-basic:3.6.2
+FROM rsettlag/ood-rstudio-basic:4.0.0
 
 LABEL org.label-schema.license="GPL-2.0" \
       org.label-schema.vcs-url="https://github.com/rsettlag" \
       maintainer="Robert Settlage <rsettlag@vt.edu>"
+ENV PATH="${PATH}:/miniconda3/bin"
 
 RUN apt-get update -qq && apt-get -y --no-install-recommends install \
   libxml2-dev \
@@ -28,7 +29,12 @@ RUN apt-get update -qq && apt-get -y --no-install-recommends install \
   php \
   php-common \
   imagemagick \
-  php-imagick
+  php-imagick \
+  gzip \
+  wget
+
+RUN wget https://repo.anaconda.com/miniconda/Miniconda2-latest-Linux-x86_64.sh \
+  && sh Miniconda2-latest-Linux-x86_64.sh -b -p /miniconda3
  
 RUN echo "options(repos = c(CRAN='https://cran.rstudio.com'), download.file.method = 'libcurl')" >> /usr/local/lib/R/etc/Rprofile.site
 
