@@ -38,7 +38,7 @@ RUN apt-get update -qq && apt-get -y --no-install-recommends install \
 
 RUN echo "options(repos = c(CRAN='https://cran.rstudio.com'), download.file.method = 'libcurl')" >> /usr/local/lib/R/etc/Rprofile.site
 
-RUN Rscript -e "BiocManager::install(update=FALSE,ask=FALSE,lib.loc='/usr/local/lib/R/site-library/',c('imager','stringi','htmlTable','microseq','Rdpack','sctransform','Hmisc','caret','biomaRt','GenomicFeatures','geneLenDataBase','kableExtra','formatR','remotes','selectr','caTools','lme4','VennDiagram','doParallel','ape','metap','bigmemory','circlize','dendextend','flashClust','randomForest','parallelDist','pvclust','Rtsne','vegan','zoo','igraph','tibble','car','crosstalk','sctransform','uwot','GenomicAlignments','Rsamtools','multtest','rtracklayer','seqinr','micropan','phangorn','phytools','Biostrings','Biobase','MLSeq','biomaRt','DESeq2','DT','edgeR','goseq','Heatplus','WGCNA','Seurat'))" 
+RUN Rscript -e "BiocManager::install(update=FALSE,ask=FALSE,lib.loc='/usr/local/lib/R/site-library/',c('EBImage','imager','stringi','htmlTable','microseq','Rdpack','sctransform','Hmisc','caret','biomaRt','GenomicFeatures','geneLenDataBase','kableExtra','formatR','remotes','selectr','caTools','lme4','VennDiagram','doParallel','ape','metap','bigmemory','circlize','dendextend','flashClust','randomForest','parallelDist','pvclust','Rtsne','vegan','zoo','igraph','tibble','car','crosstalk','sctransform','uwot','GenomicAlignments','Rsamtools','multtest','rtracklayer','seqinr','micropan','phangorn','phytools','Biostrings','Biobase','MLSeq','biomaRt','DESeq2','DT','edgeR','goseq','Heatplus','WGCNA','Seurat'))" 
 
 RUN Rscript -e "devtools::install_github('hoesler/rwantshue')"
 
