@@ -10,6 +10,7 @@ LABEL org.label-schema.license="GPL-2.0" \
 
 RUN apt-get update -qq && apt-get -y --no-install-recommends install \
   libxml2-dev \
+  libfftw3-dev \
   libgtk2.0-dev \
   xvfb \
   xauth \
